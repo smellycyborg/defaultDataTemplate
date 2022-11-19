@@ -25,8 +25,20 @@ end
 local function playerRemoving()
     local playerData = Sdk.playerData[player]
 
-	-- save player data
-	self.playerDataStore:SetAsync(string.format("Player_%d", player.UserId), playerData)
+	local success, err = pcall(function()
+        -- save player data
+        self.playerDataStore:SetAsync(string.format("Player_%d", player.UserId), playerData)
+    end)
+
+    if (err) then
+        warn(err)
+    end
+
+    repeat
+        task.wait()
+    until success
+
+    Sdk.playerData[player] = nil
 end
 
 function Sdk.init()
