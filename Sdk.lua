@@ -13,13 +13,20 @@ end
 local function playerAdded(player)
     local DEFAULT_SCHEMA = {}
 
-    local playerData = Sdk.playerDataStore:GetAsync(player.UserId)
+    local playerData
+    local success, data = pcall(function()
+        return Sdk.playerDataStore:GetAsync(player.UserId)
+    end)
+
+    if success then
+        playerData = data
+    end
 
     if not playerData then
         playerData = DEFAULT_SCHEMA
     end
 
-    Sdk.playerData = playerData
+    Sdk.playerData[player] = playerData
 end
 
 local function playerRemoving()
