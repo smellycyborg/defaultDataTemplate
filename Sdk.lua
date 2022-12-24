@@ -19,12 +19,14 @@ local function playerAdded(player)
     end)
 
     if success then
-        playerData = data
-    end
-
-    if not playerData then
-        playerData = DEFAULT_SCHEMA
-    end
+	if data ~= nil then
+        	playerData = data
+	else
+		playerData = DEFAULT_SCHEMA
+	end
+    else
+	playerData = DEFAULT_SCHEMA
+end
 
     Sdk.playerData[player] = playerData
 end
